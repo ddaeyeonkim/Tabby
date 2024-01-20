@@ -21,13 +21,7 @@ onMounted(async () => {
 
 <template>
   <main>
-    <TheWelcome />
-    <div class="flex flex-row">
-      <div class="basis-1/4 btn">01</div>
-      <div class="basis-1/4 btn">02</div>
-      <div class="basis-1/2 btn">03</div>
-    </div>
-    <button @click="saveUser">Save User</button>
+    <button class="btn" @click="saveUser">Save User</button>
     <div v-for="user in users" :key="user.id">{{ user.firstName }} {{ user.lastName }}</div>
   </main>
 </template>
