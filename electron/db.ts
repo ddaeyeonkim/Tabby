@@ -1,10 +1,11 @@
 import { DataSource } from 'typeorm'
 import { User } from './entity/User'
+import { Task, SubTask, TimerEvent } from './entity/Task'
 
 const AppDataSource = new DataSource({
     type: "sqlite",
     database: "test.sqlite",
-    entities: [User],
+    entities: [User, Task, SubTask, TimerEvent],
     synchronize: true,
     logging: true,
 })

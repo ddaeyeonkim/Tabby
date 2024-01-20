@@ -3,13 +3,17 @@ const path = require('node:path')
 
 import 'reflect-metadata'
 import { AppDataSource, getAllUsers, saveUser } from './db'
+import TaskRepository from './task_repository'
 
 const isDev = process.env.IS_DEV == "true" ? true : false
+
+let taskRepository!: TaskRepository
 
 const createWindow = () => {
     AppDataSource.initialize()
     .then(() => {
         // here you can start to work with your database
+        taskRepository = new TaskRepository(AppDataSource)
     })
     .catch((error) => console.log(error))
 
@@ -34,6 +38,11 @@ app.whenReady().then(() => {
     ipcMain.handle('ping', () => 'pong')
     ipcMain.handle('db:getAllUsers', getAllUsers)
     ipcMain.handle('db:saveUser', saveUser)
+    ipcMain.handle('db:getAllTasks', async () => await taskRepository.getAllTasks())
+    ipcMain.handle('db:saveTask', async (_: any, args: string) => {
+        await taskRepository.saveTask(args)
+    }
+    )
     
     const mainWindow = createWindow()
 

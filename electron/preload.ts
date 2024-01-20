@@ -7,4 +7,6 @@ contextBridge.exposeInMainWorld('api', {
     ping: () => ipcRenderer.invoke('ping'),
     getAllUsers: () => ipcRenderer.invoke('db:getAllUsers'),
     saveUser: () => ipcRenderer.invoke('db:saveUser'),
+    getAllTasks: () => ipcRenderer.invoke('db:getAllTasks'),
+    saveTask: (taskName: string) => ipcRenderer.invoke('db:saveTask', taskName),
 })
