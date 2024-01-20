@@ -5,12 +5,12 @@ import { ref, onMounted } from 'vue'
 const users = ref([])
 
 async function getAllUsers() {
-  const allUsers = await window.versions.getAllUsers()
+  const allUsers = await window.api.getAllUsers()
   users.value = allUsers
 }
 
 async function saveUser() {
-  await window.versions.saveUser()
+  await window.api.saveUser()
   await getAllUsers()
 }
 

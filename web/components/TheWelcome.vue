@@ -2,10 +2,10 @@
 import { ref } from 'vue';
 
 const info = ref(
-`This app is using Chrome (v${window.versions.chrome()}), Node.js (v${window.versions.node()}), and Electron (v${window.versions.electron()})`
+`This app is using Chrome (v${window.api.chrome()}), Node.js (v${window.api.node()}), and Electron (v${window.api.electron()})`
 )
 const func = async () => {
-    const response = await window.versions.ping()
+    const response = await window.api.ping()
     console.log(response) // prints out 'pong'
 }
 
