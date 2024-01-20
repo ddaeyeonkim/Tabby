@@ -14,7 +14,7 @@ const createWindow = () => {
     .catch((error) => console.log(error))
 
     const win = new BrowserWindow({
-        width: 800,
+        width: isDev ? 1200 : 800,
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
@@ -37,7 +37,9 @@ app.whenReady().then(() => {
     
     const mainWindow = createWindow()
 
-    mainWindow.toggleDevTools()
+    if (isDev) {
+        mainWindow.toggleDevTools()
+    }
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
