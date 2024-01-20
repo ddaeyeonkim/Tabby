@@ -1,5 +1,22 @@
 <script setup>
 import TheWelcome from '../components/TheWelcome.vue'
+import { ref, onMounted } from 'vue'
+
+const users = ref([])
+
+async function getAllUsers() {
+  const allUsers = await window.versions.getAllUsers()
+  users.value = allUsers
+}
+
+async function saveUser() {
+  await window.versions.saveUser()
+  await getAllUsers()
+}
+
+onMounted(async () => {
+  await getAllUsers()
+})
 </script>
 
 <template>
@@ -10,6 +27,8 @@ import TheWelcome from '../components/TheWelcome.vue'
       <div class="basis-1/4 btn">02</div>
       <div class="basis-1/2 btn">03</div>
     </div>
+    <button @click="saveUser">Save User</button>
+    <div v-for="user in users" :key="user.id">{{ user.firstName }} {{ user.lastName }}</div>
   </main>
 </template>
 

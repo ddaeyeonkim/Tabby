@@ -1,3 +1,5 @@
+import 'reflect-metadata'
+
 import './index.css'
 
 import { createApp } from 'vue'
