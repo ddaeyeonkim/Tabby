@@ -4,12 +4,39 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "electron": "wait-on tcp:5173 && cross-env IS_DEV=true electron .",
+    "start": "concurrently -k \"cross-env BROWSER=none npm run dev\" \"npm run electron\"",
+    "test:unit": "vitest",
+    "build:for:electron": "vue-tsc --noEmit && cross-env ELECTRON=true vite build",
+    "electron:builder": "electron-builder", 
+    "app:build": "npm run build:for:electron && npm run electron:builder",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "format": "prettier --write src/"
   },
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "pinia": "^2.1.7",
+    "vue": "^3.3.11",
+    "vue-router": "^4.2.5"
+  },
   "devDependencies": {
-    "electron": "^28.1.4"
+    "@rushstack/eslint-patch": "^1.3.3",
+    "@vitejs/plugin-vue": "^4.5.2",
+    "@vue/eslint-config-prettier": "^8.0.0",
+    "@vue/test-utils": "^2.4.3",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "electron": "^28.1.4",
+    "electron-builder": "^24.9.1",
+    "eslint": "^8.49.0",
+    "eslint-plugin-vue": "^9.17.0",
+    "jsdom": "^23.0.1",
+    "prettier": "^3.0.3",
+    "vite": "^5.0.10",
+    "vitest": "^1.0.4",
+    "wait-on": "^7.2.0"
   }
 }

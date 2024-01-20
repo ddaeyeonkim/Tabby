@@ -1,6 +1,8 @@
 const { app, BrowserWindow, ipcMain } = require('electron/main')
 const path = require('node:path')
 
+const isDev = process.env.IS_DEV == "true" ? true : false
+
 const createWindow = () => {
     const win = new BrowserWindow({
         width: 800,
@@ -10,7 +12,11 @@ const createWindow = () => {
         }
     })
 
-    win.loadFile('index.html')
+    win.loadURL(
+        isDev
+            ? 'http://localhost:5173'
+            : `file://${path.join(__dirname, '../dist/index.html')}`
+    )
 }
 
 app.whenReady().then(() => {
