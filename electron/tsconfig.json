@@ -1,0 +1,12 @@
+{
+  "include": ["./*.ts"],
+  "compilerOptions": {
+    "composite": true,
+    "target": "es2016",
+    "module": "commonjs",
+    "outDir": "../build",
+    "strict": true, 
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}
