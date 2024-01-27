@@ -39,10 +39,13 @@ app.whenReady().then(() => {
     ipcMain.handle('db:getAllUsers', getAllUsers)
     ipcMain.handle('db:saveUser', saveUser)
     ipcMain.handle('db:getAllTasks', async () => await taskRepository.getAllTasks())
-    ipcMain.handle('db:saveTask', async (_: any, args: string) => {
-        await taskRepository.saveTask(args)
-    }
-    )
+    ipcMain.handle('db:saveTask', async (_: any, ...args: any[]) => {
+        const title = args[0]
+        const estimatedDurationHours = args[1]
+        const fixVersion = args[2]
+        const description = args[3]
+        await taskRepository.saveTask(title, estimatedDurationHours, fixVersion, description)
+    })
     
     const mainWindow = createWindow()
 
