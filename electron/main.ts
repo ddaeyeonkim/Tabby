@@ -5,8 +5,8 @@ const isDev = process.env.IS_DEV == "true" ? true : false
 
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: isDev ? 1200 : 800,
-        height: 600,
+        width: isDev ? 1424 : 1024,
+        height: 760,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         }
