@@ -20,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dexie": "^3.2.4",
     "pinia": "^2.1.7",
     "reflect-metadata": "^0.2.1",
     "sqlite3": "^5.1.7",

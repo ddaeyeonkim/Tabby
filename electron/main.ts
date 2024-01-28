@@ -1,22 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron/main')
 const path = require('node:path')
 
-import 'reflect-metadata'
-import { AppDataSource, getAllUsers, saveUser } from './db'
-import TaskRepository from './task_repository'
-
 const isDev = process.env.IS_DEV == "true" ? true : false
 
-let taskRepository!: TaskRepository
-
 const createWindow = () => {
-    AppDataSource.initialize()
-    .then(() => {
-        // here you can start to work with your database
-        taskRepository = new TaskRepository(AppDataSource)
-    })
-    .catch((error) => console.log(error))
-
     const win = new BrowserWindow({
         width: isDev ? 1200 : 800,
         height: 600,
@@ -36,16 +23,6 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
     ipcMain.handle('ping', () => 'pong')
-    ipcMain.handle('db:getAllUsers', getAllUsers)
-    ipcMain.handle('db:saveUser', saveUser)
-    ipcMain.handle('db:getAllTasks', async () => await taskRepository.getAllTasks())
-    ipcMain.handle('db:saveTask', async (_: any, ...args: any[]) => {
-        const title = args[0]
-        const estimatedDurationHours = args[1]
-        const fixVersion = args[2]
-        const description = args[3]
-        await taskRepository.saveTask(title, estimatedDurationHours, fixVersion, description)
-    })
     
     const mainWindow = createWindow()
 

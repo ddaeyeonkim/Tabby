@@ -1,28 +1,10 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
-const users = ref([])
-
-async function getAllUsers() {
-  const allUsers = await window.api.getAllUsers()
-  users.value = allUsers
-}
-
-async function saveUser() {
-  await window.api.saveUser()
-  await getAllUsers()
-}
-
-onMounted(async () => {
-  await getAllUsers()
-})
 </script>
 
 <template>
   <main>
-    <button class="btn" @click="saveUser">Save User</button>
-    <div v-for="user in users" :key="user.id">{{ user.firstName }} {{ user.lastName }}</div>
   </main>
 </template>
 

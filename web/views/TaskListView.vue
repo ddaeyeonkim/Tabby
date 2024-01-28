@@ -1,17 +1,32 @@
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { db } from '../local/db'
+import type { Task } from '../local/entity/Task'
 
-const tasks = ref([])
+const tasks = ref<Task[]>([])
 const taskName = ref('')
 const estimatedTime = ref('')
 
 async function saveTask() {
-  await window.api.saveTask(taskName.value, estimatedTime.value)
+  const task: Task = {
+    taskName: taskName.value,
+    estimatedDurationHours: +estimatedTime.value,
+    isCompleted: false,
+  }
+  await db.tasks.add(task)
+
   taskName.value = ''
   estimatedTime.value = ''
-  const alltasks = await window.api.getAllTasks()
-  tasks.value = alltasks
+  await getAll()
 }
+
+async function getAll() {
+  tasks.value = await db.tasks.toArray()
+}
+
+onMounted(() => {
+  getAll()
+})
 </script>
 
 <template>
