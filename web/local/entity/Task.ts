@@ -7,6 +7,7 @@ export interface Task {
   endTime?: Date
   fixVersion?: string
   description?: string
+  createdAt: Date
   isCompleted: boolean
 }
 

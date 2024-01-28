@@ -9,7 +9,7 @@ export class MyDatabase extends Dexie {
     constructor() {
         super('myDatabase')
         this.version(1).stores({
-            tasks: '++id, fixVersion',
+            tasks: '++id, fixVersion, createdAt, isCompleted',
             subTasks: '++id, taskId, fixVersion',
             timerEvents: '++id, taskId, subTaskId, fixVersion'
         })

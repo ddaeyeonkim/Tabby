@@ -8,10 +8,12 @@ const taskName = ref('')
 const estimatedTime = ref('')
 
 async function saveTask() {
+  if (!taskName.value && !estimatedTime.value) return
   const task: Task = {
     taskName: taskName.value,
     estimatedDurationHours: +estimatedTime.value,
-    isCompleted: false,
+    createdAt: new Date(),
+    isCompleted: false
   }
   await db.tasks.add(task)
 
@@ -21,7 +23,15 @@ async function saveTask() {
 }
 
 async function getAll() {
-  tasks.value = await db.tasks.toArray()
+  tasks.value = await db.tasks.orderBy('createdAt').reverse().toArray()
+}
+
+async function toggleTask(id: number | undefined, isCompleted: boolean) {
+  console.log(id, isCompleted)
+  if (!id) return
+  await db.tasks.update(id, { isCompleted: isCompleted })
+  await getAll()
+  console.log(tasks.value)
 }
 
 onMounted(() => {
@@ -61,8 +71,32 @@ onMounted(() => {
         <button class="btn" @click="saveTask">저장</button>
       </div>
     </div>
-    <div v-for="task in tasks" :key="task.id">
-      <p>{{ task.taskName }}</p>
+    <div class="flex-row w-full">
+      <ul class="flex-row w-full">
+        <li
+          v-for="task in tasks"
+          :key="task.id"
+          :class="[task.isCompleted ? 'taskRowComplete' : 'taskRow']"
+        >
+          <input
+            type="checkbox"
+            v-model="task.isCompleted"
+            @click.prevent="toggleTask(task.id, !task.isCompleted)"
+            name="checkbox"
+            class="size-5 text-blue-600 bg-gray-100 border-gray-300 rounded"
+          />
+          <label
+            :class="[
+              'w-full py-4 ms-2 text-sm font-medium',
+              task.isCompleted ? 'text-gray-400 line-through' : 'text-gray-900'
+            ]"
+            >{{ task.taskName }}</label
+          >
+          <span class="w-24 text-sm font-medium text-gray-500 text-end"
+            >{{ task.estimatedDurationHours }}h</span
+          >
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -76,5 +110,11 @@ onMounted(() => {
 }
 .btn {
   @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
+}
+.taskRow {
+  @apply flex items-center px-4 border border-gray-200 rounded-lg bg-white mb-1;
+}
+.taskRowComplete {
+  @apply flex items-center px-4 border border-gray-200 rounded-lg bg-gray-100 mb-1;
 }
 </style>
